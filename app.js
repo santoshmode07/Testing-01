@@ -9,6 +9,8 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
+//// Handling GET request ////
+
 app.get('/api/v1/tours', (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -16,6 +18,33 @@ app.get('/api/v1/tours', (req, res) => {
     data: { tours },
   });
 });
+
+// Handling GET request with route parameters by using req.params
+// :y? makes y optional
+// :id is a route parameter
+//find method returns the first element that satisfies the condition
+//
+app.get('/api/v1/tours/:id/', (req, res) => {
+  console.log(req.params);
+  const id = req.params.id * 1;
+  const tour = tours.find((el) => el.id === id);
+
+  if (!tour) {
+    res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+    return;
+  }
+
+
+  res.status(200).json({
+    status: 'success',
+    data: { tour },
+  });
+});
+
+//// Handling POST request with adding middle ware to parse JSON data with express.json() by accessing req.body////
 
 app.post('/api/v1/tours', (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
@@ -39,7 +68,6 @@ app.post('/api/v1/tours', (req, res) => {
     }
   );
 });
-
 
 const port = 3000;
 const server = app.listen(port, () => {
