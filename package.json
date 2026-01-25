@@ -18,6 +18,7 @@
     "express-rate": "^0.0.1",
     "express-rate-limit": "^8.2.1",
     "helmet": "^8.1.0",
+    "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.3",
     "limit": "^0.0.1",
     "mongoose": "^5.13.23",
