@@ -15,6 +15,7 @@
     "dotenv": "^17.2.3",
     "express": "^4.22.1",
     "express-rate": "^0.0.1",
+    "express-rate-limit": "^8.2.1",
     "jsonwebtoken": "^9.0.3",
     "limit": "^0.0.1",
     "mongoose": "^5.13.23",
