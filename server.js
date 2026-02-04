@@ -12,17 +12,12 @@ const app = require('./app');
 dotenv.config({ path: './config.env' });
 
 const DB = process.env.DATABASE.replace(
-  '<PASSWORD>',
+  '<db_password>',
   process.env.DATABASE_PASSWORD,
 );
 
 mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
+  .connect(DB)
   .then(() => {
     console.log('DB connection successful!');
   })

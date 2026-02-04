@@ -1,9 +1,16 @@
+const path = require('path');
 const express = require('express');
+//HTTP request logger middleware for node.js
 const morgan = require('morgan');
+//rate limiting middleware is used to limit repeated requests to public APIs and/or endpoints such as password reset
 const rateLimit = require('express-rate-limit');
+//Helemt helps you secure your Express apps by setting various HTTP headers
 const helmet = require('helmet');
+//Data sanitization against NoSQL query injection
 const mongosanitize = require('express-mongo-sanitize');
+//Data Sanitization against XSS
 const xss = require('xss-clean');
+//Prevent parameter pollution
 const hpp = require('hpp');
 
 const AppError = require('./Utils/appError');
@@ -14,7 +21,13 @@ const reviewRouter = require('./routes/reviewRouter');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 // 1) GLOBAL MIDDLEWARES
+
+// Serving static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set security HTTP headers
 app.use(helmet());
@@ -58,9 +71,6 @@ app.use(
   }),
 );
 
-// Serving static files
-app.use(express.static(`${__dirname}/public`));
-
 // Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -89,6 +99,9 @@ app.use((req, res, next) => {
 // app.delete('/api/v1/tours/:id', deleteTour);
 
 // 3)ROUTES
+app.get('/', (req, res) => {
+  res.status(200).render('base');
+});
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
