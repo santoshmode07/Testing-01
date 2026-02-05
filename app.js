@@ -99,11 +99,24 @@ app.use((req, res, next) => {
 // app.delete('/api/v1/tours/:id', deleteTour);
 
 // 3)ROUTES
+
 app.get('/', (req, res) => {
   res.status(200).render('base', {
     title: 'Exciting tours for adventurous people',
     tour: 'The Forest Hiker',
     user: 'Jonas',
+  });
+});
+
+app.get('/overview', (req, res) => {
+  res.status(200).render('overview', {
+    title: 'All Tours',
+  });
+});
+
+app.get('/tour', (req, res) => {
+  res.status(200).render('tour', {
+    title: 'The Forest Hiker Tour',
   });
 });
 
