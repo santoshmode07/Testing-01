@@ -1,7 +1,5 @@
 //review/rating/createdAt/ref to tour/ref to user
 const mongoose = require('mongoose');
-const Tour = require('./tourModel');
-const User = require('./userModel');
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -37,7 +35,7 @@ const reviewSchema = new mongoose.Schema(
 
 reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
-reviewSchema.pre(/^find/, function (next) {
+reviewSchema.pre(/^find/, function () {
   // this.populate({
   //   path: 'user',
   //   select: 'name photo',
@@ -50,7 +48,6 @@ reviewSchema.pre(/^find/, function (next) {
     path: 'user',
     select: 'name',
   });
-  next();
 });
 
 reviewSchema.statics.calcAverageRatings = async function (tourId) {
@@ -84,9 +81,8 @@ reviewSchema.post('save', function () {
   // this points to current review
   this.constructor.calcAverageRatings(this.tour);
 });
-reviewSchema.pre(/^findOneAnd/, async function (next) {
+reviewSchema.pre(/^findOneAnd/, async function () {
   this.r = await this.findOne();
-  next();
 });
 
 reviewSchema.post(/^findOneAnd/, async function () {

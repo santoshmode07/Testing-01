@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-const Review = require('./reviewModel');
 // const User = require('./userModel');
 // const validator = require('validator');
 
@@ -138,9 +137,8 @@ tourSchema.virtual('reviews', {
 });
 
 //DOCUMENT MIDDLEWARE: runs before .save() and .create()
-tourSchema.pre('save', function (next) {
+tourSchema.pre('save', function () {
   this.slug = slugify(this.name, { lower: true });
-  next();
 });
 
 //Embedding guides
@@ -162,22 +160,20 @@ tourSchema.pre('save', function (next) {
 
 //QUERY MIDDLEWARE
 
-tourSchema.pre(/^find/, function (next) {
+tourSchema.pre(/^find/, function () {
   this.find({ secretTour: { $ne: true } });
   this.start = Date.now();
-  next();
-});
-tourSchema.post(/^find/, function (docs, next) {
-  console.log(`Query took ${Date.now() - this.start} ms`);
-  next();
 });
 
-tourSchema.pre(/^find/, function (next) {
+tourSchema.post(/^find/, function (docs) {
+  console.log(`Query took ${Date.now() - this.start} ms`);
+});
+
+tourSchema.pre(/^find/, function () {
   this.populate({
     path: 'guides',
     select: '-__v -passwordChangedAt',
   });
-  next();
 });
 
 //AGGREGATION MIDDLEWARE
