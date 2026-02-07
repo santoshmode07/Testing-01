@@ -559,6 +559,12 @@ body {
   cursor: pointer;
 }
 
+.leaflet-popup-content p {
+  font-size: 1.6rem !important;
+  font-weight: 700 !important;
+  margin: 0;
+}
+
 .mapboxgl-popup {
   max-width: 25rem;
 }
