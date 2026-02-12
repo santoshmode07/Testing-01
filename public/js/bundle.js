@@ -12943,6 +12943,9 @@ var updateSettings = exports.updateSettings = /*#__PURE__*/function () {
           res = _context.v;
           if (res.data.status === 'success') {
             (0, _alert.showAlert)('success', "".concat(type.toUpperCase(), " Data updated successfully!"));
+            window.setTimeout(function () {
+              location.assign('/me');
+            }, 1500);
           }
           _context.n = 3;
           break;
@@ -13122,12 +13125,11 @@ if (loginForm) loginForm.addEventListener('submit', function (e) {
 if (logOutBtn) logOutBtn.addEventListener('click', _login.logout);
 if (userDataForm) userDataForm.addEventListener('submit', function (e) {
   e.preventDefault();
-  var email = document.getElementById('email').value;
-  var name = document.getElementById('name').value;
-  (0, _updateSettings.updateSettings)({
-    name: name,
-    email: email
-  }, 'data');
+  var form = new FormData();
+  form.append('name', document.getElementById('name').value);
+  form.append('email', document.getElementById('email').value);
+  form.append('photo', document.getElementById('photo').files[0]);
+  (0, _updateSettings.updateSettings)(form, 'data');
 });
 if (userPasswordForm) userPasswordForm.addEventListener('submit', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
@@ -13185,7 +13187,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41103" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35171" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
@@ -13330,4 +13332,3 @@ function hmrAcceptRun(bundle, id) {
   }
 }
 },{}]},{},["../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=/bundle.js.map
