@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 process.on('uncaughtException', (err) => {
@@ -7,9 +6,10 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-const app = require('./app');
-
 dotenv.config({ path: './config.env' });
+
+const mongoose = require('mongoose');
+const app = require('./app');
 
 const DB = process.env.DATABASE.replace(
   '<db_password>',
@@ -29,6 +29,7 @@ const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
+
 process.on('SIGTERM', () => {
   console.log('👋 SIGTERM RECEIVED. Shutting down gracefully');
   server.close(() => {
