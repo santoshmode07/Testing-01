@@ -11,6 +11,12 @@ block content
                 .form__group
                     label.form__label(for='email') Email address
                     input#email.form__input(type='email', placeholder='you@example.com', required)
+                .form__group
+                    label.form__label(for='otp') OTP
+                    .form__group-inline
+                        input#otp.form__input(type='text', placeholder='Enter OTP', required)
+                        button.btn.btn--small.btn--green#send-otp(type='button') Send OTP
+                
                 .form__group.ma-bt-md
                     label.form__label(for='password') Password
                     input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')

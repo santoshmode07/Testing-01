@@ -1,11 +1,12 @@
 /* eslint-disable */
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
-import { login, logout, forgotPassword, signup } from './login';
+import { sendOtp, login, logout, forgotPassword, signup } from './login';
 import { resetPassword } from './resetPassword';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
 import { createReview } from './review';
+import { showAlert } from './alert';
 
 // DOM ELEMENTS
 const loginForm = document.querySelector('.form--login');
@@ -22,8 +23,17 @@ const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 
 const bookBtn = document.getElementById('book-tour');
+const sendOtpBtn = document.getElementById('send-otp');
 
 // DELEGATION
+if (sendOtpBtn) {
+  sendOtpBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const name = document.getElementById('name').value;
+    sendOtp(email, name);
+  });
+}
 
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
@@ -42,9 +52,10 @@ if (signupForm)
     e.preventDefault();
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
+    const otp = document.getElementById('otp').value;
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('passwordConfirm').value;
-    signup(name, email, password, passwordConfirm);
+    signup(name, email, otp, password, passwordConfirm);
   });
 
 if (logOutBtn) logOutBtn.addEventListener('click', logout);

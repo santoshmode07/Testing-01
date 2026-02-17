@@ -5,6 +5,7 @@ const catchAsync = require('../Utils/catchAsync');
 const User = require('./../models/userModel');
 const AppError = require('./../Utils/appError');
 const Email = require('./../Utils/email');
+const Verify = require('./../models/verifyModel');
 
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
@@ -35,17 +36,55 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
-    photo: req.body.photo,
+  if (req.verify) {
+    const newUser = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      passwordConfirm: req.body.passwordConfirm,
+      photo: req.body.photo,
+    });
+    const url = `${req.protocol}://${req.get('host')}/me`;
+    console.log(url);
+
+    await new Email(newUser, url).sendWelcome();
+    createSendToken(newUser, 201, res);
+  } else {
+    return next(
+      new AppError('Email verification failed. Please try again.', 400),
+    );
+  }
+});
+
+exports.verifyEmail = catchAsync(async (req, res, next) => {
+  const { email, otp } = req.body;
+  const verifyRecord = await Verify.findOne({ email: email });
+
+  if (!verifyRecord) {
+    return next(new AppError('Please Click the Send OTP.', 404));
+  }
+
+  if (verifyRecord.otp !== otp) {
+    return next(new AppError('Invalid OTP. Please try again.', 400));
+  }
+
+  req.verify = true;
+  await Verify.deleteOne({ email: email });
+  next();
+});
+
+exports.sendOTP = catchAsync(async (req, res, next) => {
+  const { email, name } = req.body;
+  console.log(email);
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  await Verify.deleteOne({ email: email });
+  await Verify.create({ email: email, otp: otp });
+  const url = `${req.protocol}://${req.get('host')}/api/v1/users/verifyEmail`;
+  await new Email({ email, otp, name }, url).sendOTP();
+  res.status(200).json({
+    status: 'success',
+    message: 'OTP sent successfully',
   });
-  const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
-  await new Email(newUser, url).sendWelcome();
-  createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {

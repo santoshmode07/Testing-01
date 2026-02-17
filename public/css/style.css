@@ -1356,3 +1356,19 @@ body {
   text-transform: uppercase;
   color: #55c57a;
 }
+
+.form__group-inline {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.form__group-inline .form__input {
+  flex: 1;
+}
+
+#send-otp {
+  white-space: nowrap;
+  padding: 1.25rem 2rem;
+  font-size: 1.4rem;
+}

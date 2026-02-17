@@ -6,6 +6,7 @@ const { convert } = require('html-to-text');
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
+    this.otp = user.otp || null;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
     this.from = `Santosh <${process.env.EMAIL_FROM}>`;
@@ -36,6 +37,7 @@ module.exports = class Email {
     //1)Render HTML based on pug template
     const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
       firstName: this.firstName,
+      otp: this.otp,
       url: this.url,
       subject,
     });
@@ -66,5 +68,9 @@ module.exports = class Email {
 
   async sendBookingConfirmation() {
     await this.send('bookingConfirmation', 'Tour Booking Confirmation');
+  }
+
+  async sendOTP() {
+    await this.send('otp', 'Your OTP for Email Verification');
   }
 };

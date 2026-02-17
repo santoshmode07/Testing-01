@@ -2,6 +2,22 @@
 import axios from 'axios';
 import { showAlert } from './alert';
 
+export const sendOtp = async (email, name) => {
+  try {
+    await axios({
+      method: 'POST',
+      url: '/api/v1/users/send-otp',
+      data: {
+        email,
+        name,
+      },
+    });
+    showAlert('success', 'OTP sent to your email!');
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
 export const login = async (email, password) => {
   try {
     const res = await axios({
@@ -25,7 +41,7 @@ export const login = async (email, password) => {
   }
 };
 
-export const signup = async (name, email, password, passwordConfirm) => {
+export const signup = async (name, email, otp, password, passwordConfirm) => {
   try {
     const res = await axios({
       method: 'POST',
@@ -33,6 +49,7 @@ export const signup = async (name, email, password, passwordConfirm) => {
       data: {
         name,
         email,
+        otp,
         password,
         passwordConfirm,
       },
