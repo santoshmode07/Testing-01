@@ -73,17 +73,22 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
 });
 
 exports.sendOTP = catchAsync(async (req, res, next) => {
-  const { email, name } = req.body;
-  // console.log(email);
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  await Verify.deleteOne({ email: email });
-  await Verify.create({ email: email, otp: otp });
-  const url = `${req.protocol}://${req.get('host')}/api/v1/users/verifyEmail`;
-  await new Email({ email, otp, name }, url).sendOTP();
-  res.status(200).json({
-    status: 'success',
-    message: 'OTP sent successfully',
-  });
+  try {
+    const { email, name } = req.body;
+    // console.log(email);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    await Verify.deleteOne({ email: email });
+    await Verify.create({ email: email, otp: otp });
+    const url = `${req.protocol}://${req.get('host')}/api/v1/users/verifyEmail`;
+    await new Email({ email, otp, name }, url).sendOTP();
+    res.status(200).json({
+      status: 'success',
+      message: 'OTP sent successfully',
+    });
+  } catch (err) {
+    console.error('ERROR SENDING OTP 💥:', err);
+    return next(new AppError('There was an error sending the OTP. Please try again later.', 500));
+  }
 });
 
 exports.login = catchAsync(async (req, res, next) => {
