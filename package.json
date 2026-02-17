@@ -4,7 +4,8 @@
   "description": "Learning node,express and mongodb",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=development nodemon server.js",
+    "start": "node server.js",
+    "dev": "NODE_ENV=development nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "NODE_ENV=development nodemon --inspect server.js",
     "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js --no-source-maps",
