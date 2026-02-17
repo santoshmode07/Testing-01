@@ -13,11 +13,12 @@ module.exports = class Email {
   }
 
   newTransport() {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production' || process.env.BREVO_USERNAME) {
       // Brevo (formerly SendinBlue)
       return nodemailer.createTransport({
-        host: 'smtp-brevo.com',
+        host: 'smtp-relay.brevo.com',
         port: 587,
+        secure: false,
         auth: {
           user: process.env.BREVO_USERNAME,
           pass: process.env.BREVO_PASSWORD,
