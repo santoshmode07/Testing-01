@@ -36,7 +36,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(cors());
 app.use(
   cors({
-    origin: 'https://natours-api-eight.vercel.app/',
+    origin: 'https://natours-api-eight.vercel.app',
     credentials: true,
   }),
 );
