@@ -14,6 +14,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./Utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -31,6 +32,10 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
+
+app.use(cors());
+// app.use(cors({ origin: 'https://natours-api-eight.vercel.app/' }));
+app.options('*', cors());
 
 // Ignore Chrome DevTools noise
 app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => {
