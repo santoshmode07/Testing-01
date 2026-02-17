@@ -1,3 +1,4 @@
+const path = require('path');
 const dotenv = require('dotenv');
 
 process.on('uncaughtException', (err) => {
@@ -6,7 +7,7 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: path.join(__dirname, 'config.env') });
 
 const mongoose = require('mongoose');
 const app = require('./app');

@@ -14,9 +14,10 @@ module.exports = class Email {
 
   newTransport() {
     if (process.env.NODE_ENV === 'production') {
-      //Send Grid
+      // Brevo (formerly SendinBlue)
       return nodemailer.createTransport({
-        service: 'SendinBlue',
+        host: 'smtp-brevo.com',
+        port: 587,
         auth: {
           user: process.env.BREVO_USERNAME,
           pass: process.env.BREVO_PASSWORD,
@@ -25,7 +26,7 @@ module.exports = class Email {
     }
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
+      port: process.env.EMAIL_PORT * 1,
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
