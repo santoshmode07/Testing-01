@@ -1,4 +1,4 @@
-const Review = require('./../models/reviewModel');
+const Review = require('../models/reviewModel');
 // const catchAsync = require('./../Utils/catchAsync');
 const factory = require('./handlerFactory');
 

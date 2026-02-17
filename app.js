@@ -32,6 +32,11 @@ app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
 
+// Ignore Chrome DevTools noise
+app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => {
+  res.status(404).end();
+});
+
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -60,6 +65,8 @@ app.use(
         'https://*.tile.openstreetmap.org',
         'https://unpkg.com',
         'https://cdn.jsdelivr.net',
+        'https://natours-api-iwxd.onrender.com',
+        'https://*.stripe.com',
         'ws://127.0.0.1:*',
       ],
       frameSrc: ["'self'", 'https://js.stripe.com'],
