@@ -15,10 +15,15 @@ const sanitizeReturnTo = (value) => {
   return value;
 };
 
+const isSecureRequest = (req) =>
+  req.secure ||
+  req.protocol === 'https' ||
+  req.get('x-forwarded-proto') === 'https';
+
 const getCookieOptions = (req, expires) => ({
-  expires,
+  ...(expires ? { expires } : {}),
   httpOnly: true,
-  secure: req.secure || req.get('x-forwarded-proto') === 'https',
+  secure: isSecureRequest(req),
   sameSite: 'lax',
   path: '/',
 });
@@ -136,7 +141,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.logout = (req, res) => {
   const expiredDate = new Date(0);
-  res.clearCookie('jwt', getCookieOptions(req, expiredDate));
+  res.clearCookie('jwt', getCookieOptions(req));
   res.cookie('jwt', 'loggedout', getCookieOptions(req, expiredDate));
   res.status(200).json({ status: 'success' });
 };
