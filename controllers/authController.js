@@ -141,6 +141,9 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.logout = (req, res) => {
   const expiredDate = new Date(0);
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
   res.clearCookie('jwt', getCookieOptions(req));
   res.cookie('jwt', 'loggedout', getCookieOptions(req, expiredDate));
   res.status(200).json({ status: 'success' });
