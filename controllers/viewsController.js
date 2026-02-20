@@ -5,6 +5,14 @@ const User = require('../models/userModel');
 const Booking = require('../models/bookingModel');
 const Review = require('../models/reviewModel');
 
+const getSafeReturnTo = (value) => {
+  if (typeof value !== 'string') return '/';
+  if (!value.startsWith('/')) return '/';
+  if (value.startsWith('//')) return '/';
+  if (value.startsWith('/api')) return '/';
+  return value;
+};
+
 exports.getOverview = catchAsync(async (req, res) => {
   //1)Get Tour data from collection
   const tours = await Tour.find();
@@ -49,14 +57,19 @@ exports.getTour = catchAsync(async (req, res, next) => {
 });
 
 exports.getLoginForm = catchAsync(async (req, res) => {
+  const returnTo = getSafeReturnTo(req.query.returnTo);
+
   res.status(200).render('login', {
     title: 'Login into your Account',
+    returnTo,
   });
 });
 
 exports.getSignupForm = (req, res) => {
+  const returnTo = getSafeReturnTo(req.query.returnTo);
   res.status(200).render('signup', {
     title: 'create your account!',
+    returnTo,
   });
 };
 

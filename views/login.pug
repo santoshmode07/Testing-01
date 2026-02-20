@@ -5,6 +5,7 @@ block content
         .login-form
             h2.heading-secondary.ma-bt-lg Log into your account
             form.form.form--login
+                input#returnTo(type='hidden', value=returnTo || '/')
                 .form__group
                     label.form__label(for='email') Email address
                     input#email.form__input(type='email', placeholder='you@example.com', required)
@@ -13,5 +14,8 @@ block content
                     input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
                 .form__group.ma-bt-md
                     a.btn-text(href='/forgotPassword') Forgot password?
+                .form__group.ma-bt-md.auth-switch
+                    | Not have an account? 
+                    a.btn-text(href=`/signup?returnTo=${encodeURIComponent(returnTo || '/')}`) Signup
                 .form__group
                     button.btn.btn--green Login

@@ -18,7 +18,7 @@ export const sendOtp = async (email, name) => {
   }
 };
 
-export const login = async (email, password) => {
+export const login = async (email, password, returnTo = '/') => {
   try {
     const res = await axios({
       method: 'POST',
@@ -26,6 +26,7 @@ export const login = async (email, password) => {
       data: {
         email,
         password,
+        returnTo,
       },
     });
     // console.log(res);
@@ -33,7 +34,7 @@ export const login = async (email, password) => {
     if (res.data.status === 'success') {
       showAlert('success', 'Logged in successfully!');
       window.setTimeout(() => {
-        location.assign('/');
+        location.assign(res.data.redirectTo || '/');
       }, 1500);
     }
   } catch (err) {
@@ -41,7 +42,14 @@ export const login = async (email, password) => {
   }
 };
 
-export const signup = async (name, email, otp, password, passwordConfirm) => {
+export const signup = async (
+  name,
+  email,
+  otp,
+  password,
+  passwordConfirm,
+  returnTo = '/',
+) => {
   try {
     const res = await axios({
       method: 'POST',
@@ -52,13 +60,14 @@ export const signup = async (name, email, otp, password, passwordConfirm) => {
         otp,
         password,
         passwordConfirm,
+        returnTo,
       },
     });
 
     if (res.data.status === 'success') {
       showAlert('success', 'Signed up successfully!');
       window.setTimeout(() => {
-        location.assign('/');
+        location.assign(res.data.redirectTo || '/');
       }, 1500);
     }
   } catch (err) {

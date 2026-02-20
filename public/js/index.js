@@ -44,7 +44,8 @@ if (loginForm)
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    login(email, password);
+    const returnTo = document.getElementById('returnTo')?.value || '/';
+    login(email, password, returnTo);
   });
 
 if (signupForm)
@@ -55,10 +56,15 @@ if (signupForm)
     const otp = document.getElementById('otp').value;
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('passwordConfirm').value;
-    signup(name, email, otp, password, passwordConfirm);
+    const returnTo = document.getElementById('returnTo')?.value || '/';
+    signup(name, email, otp, password, passwordConfirm, returnTo);
   });
 
-if (logOutBtn) logOutBtn.addEventListener('click', logout);
+if (logOutBtn)
+  logOutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    logout();
+  });
 if (userDataForm)
   userDataForm.addEventListener('submit', (e) => {
     e.preventDefault();

@@ -5,6 +5,7 @@ block content
         .signup-form
             h2.heading-secondary.ma-bt-lg Create your account!
             form.form.form--signup
+                input#returnTo(type='hidden', value=returnTo || '/')
                 .form__group
                     label.form__label(for='name') Your name
                     input#name.form__input(type='text', placeholder='Your Name', required)
@@ -25,3 +26,6 @@ block content
                     input#passwordConfirm.form__input(type='password', placeholder='••••••••', required, minlength='8')
                 .form__group
                     button.btn.btn--green Sign up
+                .form__group.ma-bt-md.auth-switch
+                    | Already have an account? 
+                    a.btn-text(href=`/login?returnTo=${encodeURIComponent(returnTo || '/')}`) Login

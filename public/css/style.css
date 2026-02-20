@@ -1422,6 +1422,19 @@ body {
   margin-bottom: 2.5rem;
 }
 
+.auth-switch {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.auth-switch .btn-text:link,
+.auth-switch .btn-text:visited {
+  font-size: 1.7rem;
+  font-weight: 700;
+  padding: 4px 6px;
+}
+
 .form__label {
   display: block;
   font-size: 1.6rem;
